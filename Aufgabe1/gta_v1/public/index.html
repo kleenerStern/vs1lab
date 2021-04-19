@@ -11,77 +11,76 @@
 <body>
 
 <header>
-    <img src="./images/location.png" width="100"
-         alt="an image of a map and location">
-    <h1>GeoTagApp</h1>
-    <nav>
-        <a href="#">About</a> | <a href="#">Help</a> | <a
-            href="/">Home</a>
-    </nav>
+    <div class="header">
+        <img src="./images/location.png" width="100"
+             alt="an image of a map and location">
+        <h1>GeoTagApp</h1>
+        <nav>
+            <a href="#">About</a> | <a href="#">Help</a> | <a
+                href="/">Home</a>
+        </nav>
+    </div>
 </header>
 
-<main>
-
-    <section class="tagging">
+<main class="col-1">
+    <section class="tagging col-1">
         <h2>Tagging</h2>
 
         <!-- ############### Aufgabe1a Form1 Start -->
         <form id="tag-form" action="/tagging" method="post">
-            <fieldset>
+            <fieldset class="tagging">
                 <legend>Enter new GeoTag</legend>
-                <label for="tagging-latitude">
-                    latitude<input type="number" id="tagging-latitude" placeholder="lat. coordinates" required>
-                </label>
-                <label for="tagging-longitude">
-                    longitude<input type="number" id="tagging-longitude" placeholder="long. coordinates" required>
-                </label>
-                <label for="tagging-name">
-                    name<input type="text" id="tagging-name" placeholder="some name" maxlength="10" required>
-                </label>
-                <label for="tagging-hashtag">
-                    hashtag<input type="text" id="tagging-hashtag" placeholder="# + max. 10 letters" maxlength="11"
-                                  pattern="#[A-Za-z]+">
-                </label>
+                <label for="tagging-latitude">latitude</label>
+                <input type="number" id="tagging-latitude" placeholder="lat. coordinates" required>
+                <label for="tagging-longitude">longitude</label>
+                <input type="number" id="tagging-longitude"
+                       placeholder="long. coordinates"
+                       required>
+                <label for="tagging-name">name</label>
+                <input type="text" id="tagging-name" placeholder="some name" maxlength="10" required>
+                <label for="tagging-hashtag">hashtag</label>
+                <input type="text" id="tagging-hashtag" placeholder="# + max. 10 letters"
+                       maxlength="11"
+                       pattern="#[A-Za-z]+">
                 <input type="submit" value="submit" id="tagging-submit">
             </fieldset>
         </form>
         <!-- ############### Aufgabe1a Form1 Ende -->
-
     </section>
 
-    <section class="discovery">
+    <section class="discovery col-3">
         <h2>Discovery</h2>
 
         <!-- ############### Aufgabe1a Form2 Start -->
         <form id="filter-form" action="/discovery" method="post">
-            <fieldset>
+            <fieldset class="col-3">
                 <legend>Filter by Searchterm</legend>
-                <label for="discovery-search">
-                    <input type="text" id="discovery-search" placeholder="search term" required>
-                </label>
+                <label for="discovery-search"></label>
+                <input type="text" id="discovery-search" placeholder="search term" required>
                 <input type="submit" value="apply" id="discovery-submit">
             </fieldset>
         </form>
         <!-- ############### Aufgabe1a Form2 Ende -->
+        <div class="split-map-and-taglist col-3">
+            <div class="taglist col-1">
+                <ul id="results">
+                    <li>Castle (49.01379, 8.404435) #sight</li>
+                    <li>IWI (49.01379, 8.390071) #edu</li>
+                </ul>
+            </div>
 
-        <div class="taglist">
-            <ul id="results">
-                <li>Castle (49.01379, 8.404435) #sight</li>
-                <li>IWI (49.01379, 8.390071) #edu</li>
-            </ul>
+            <div class="tagmap col-2">
+                <img id="result-img" src="./images/mapview.jpg" alt="a map with locations"/>
+                <div class="caption">Result map</div>
+            </div>
         </div>
-
-        <div class="tagmap">
-            <img id="result-img" src="./images/mapview.jpg" alt="a map with locations"/>
-            <div class="caption">Result map</div>
-        </div>
-
     </section>
-
 </main>
 
 <footer>
-    <span>2017 by LKIT</span>
+    <div class="footer">
+        <span>2017 by LKIT</span>
+    </div>
 </footer>
 
 </body>
