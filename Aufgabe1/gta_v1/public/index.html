@@ -31,17 +31,17 @@
                 <fieldset>
                     <legend>Enter new GeoTag</legend>
                     <label for="input-tagging--latitude">Latitude</label>
-                    <input required placeholder="123" id="input-tagging--latitude" name="latitude" type="number"/>
+                    <input required placeholder="123" id="input-tagging--latitude" name="latitude" type="number" step="any"/>
 
                     <label for="input-tagging--longitude">Longitude</label>
-                    <input required placeholder="234" id="input-tagging--longitude" name="longitude" type="number"/>
+                    <input required placeholder="234" id="input-tagging--longitude" name="longitude" type="number" step="any"/>
 
                     <label for="input-tagging--name">Name</label>
                     <input required maxlength="10" placeholder="Max Muster" id="input-tagging--name" name="name"
                            type="text"/>
 
                     <label for="input-tagging--hashtag">Hashtag</label>
-                    <input required pattern="#\w{1,10}" placeholder="#Hashtag" id="input-tagging--hashtag"
+                    <input pattern="#\w{1,10}" placeholder="#Hashtag" id="input-tagging--hashtag"
                            name="hashtag" type="text"/>
 
                     <input id="input-tagging--submit" type="submit" value="submit">
