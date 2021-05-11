@@ -48,7 +48,7 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
      */
     var tryLocate = function(onsuccess, onerror) {
         if (geoLocationApi) {
-            geoLocationApi.getCurrentPosition(onsuccess, function(error) {
+            geoLocationApi.getCurrentPosition(onsuccess, function(error,) {
                 var msg;
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
@@ -82,7 +82,7 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
     };
 
     // Hier API Key eintragen
-    var apiKey = "YOUR_API_KEY_HERE";
+    var apiKey = "AWne6OSYmVCoqFVvnXyRPV8wO5AhEdLg";
 
     /**
      * Funktion erzeugt eine URL, die auf die Karte verweist.
@@ -120,7 +120,19 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
         readme: "Dieses Objekt enthält 'öffentliche' Teile des Moduls.",
 
         updateLocation: function() {
-            // TODO Hier Inhalt der Funktion "update" ergänzen
+            var onsuccess = function(position){
+                var lat = getLatitude(position);
+                var lon = getLongitude(position);
+                var mapURL = getLocationMapSrc(lat,lon);
+                document.getElementById("input-discovery--latitude").setAttribute("value", lat);
+                console.log(position);
+                document.getElementById("input-discovery--longitude").setAttribute("value", lat);
+                document.getElementById("result-img").setAttribute("src", mapURL);
+            }
+            var onerror = function(msg) {
+                alert(msg);
+            }
+            tryLocate(onsuccess,onerror);
         }
 
     }; // ... Ende öffentlicher Teil
@@ -132,6 +144,5 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
  * des Skripts.
  */
 $(function() {
-    alert("Please change the script 'geotagging.js'");
-    // TODO Hier den Aufruf für updateLocation einfügen
+    gtaLocator.updateLocation();
 });
