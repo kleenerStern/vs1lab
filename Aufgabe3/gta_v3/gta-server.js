@@ -54,21 +54,34 @@ function geoTagObject(latitude, longitude, name, hashtag){
 
 var geoTagModule = (
     var tagObjectArray  = [];
-    function addGeoTag(latitude, longitude, name, hashtag){
+    function nameEquals (tag){
+        return tag.name === name;
+    }
+    function hashtagEquals (tag){
+        return tag.hashtag === hashtag;
+    }
+    function addTag(latitude, longitude, name, hashtag){
         let geoTag = new geoTagObject(latitude, longitude, name, hashtag);
         tagObjectArray.push(geoTag);
     };
-    function deleteGeoTag(name){
-        function nameEquals (tag){
-            return tag.name === name;
-        }
+    function deleteTag(name){
         var foundIndex = tagObjectArray.findIndex(nameEquals);
         if (foundIndex != -1){
             tagObjectArray.splice(foundIndex,1);
         }
+    };
+    function searchByNameOrHashtag(nameOrHashtag) {
+        var foundNameIndex = tagObjectArray.findIndex(nameEquals);
+        var foundHashtagIndex = tagObjectArray.findIndex(hashtagEquals);
+        if (foundNameIndex != -1) {
+            return foundNameIndex;
+        } else if (foundHashtagIndex != -1) {
+            return foundHashtagIndex;
+        }
+    }
+    function searchAtCoords(latitude, longitude, radius) {
 
     }
-
 )
 
 /**
