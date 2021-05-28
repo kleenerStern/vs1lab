@@ -9,7 +9,7 @@
  */
 
 var http = require('http');
-//var path = require('path');
+var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var express = require('express');
@@ -29,14 +29,19 @@ app.set('view engine', 'ejs');
  * Teste das Ergebnis im Browser unter 'http://localhost:3000/'.
  */
 
-// TODO: CODE ERGÄNZEN
+app.use(express.static(path.join(__dirname, "public")));
 
 /**
  * Konstruktor für GeoTag Objekte.
  * GeoTag Objekte sollen min. alle Felder des 'tag-form' Formulars aufnehmen.
  */
 
-// TODO: CODE ERGÄNZEN
+function geoTagObject(latitude, longitude, name, hashtag){
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.name = name;
+    this.hashtag = hashtag;
+}
 
 /**
  * Modul für 'In-Memory'-Speicherung von GeoTags mit folgenden Komponenten:
@@ -47,7 +52,24 @@ app.set('view engine', 'ejs');
  * - Funktion zum Löschen eines Geo Tags.
  */
 
-// TODO: CODE ERGÄNZEN
+var geoTagModule = (
+    var tagObjectArray  = [];
+    function addGeoTag(latitude, longitude, name, hashtag){
+        let geoTag = new geoTagObject(latitude, longitude, name, hashtag);
+        tagObjectArray.push(geoTag);
+    };
+    function deleteGeoTag(name){
+        function nameEquals (tag){
+            return tag.name === name;
+        }
+        var foundIndex = tagObjectArray.findIndex(nameEquals);
+        if (foundIndex != -1){
+            tagObjectArray.splice(foundIndex,1);
+        }
+
+    }
+
+)
 
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
