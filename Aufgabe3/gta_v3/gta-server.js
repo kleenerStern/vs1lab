@@ -102,8 +102,6 @@ var geoTagModule = (function(){
                 }
             });
             return returnTags;
-
-
         },
         addGeoTag:function (geoTag){
             geoTags.push(geoTag);
