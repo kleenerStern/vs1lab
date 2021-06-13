@@ -29,14 +29,19 @@ app.set('view engine', 'ejs');
  * Teste das Ergebnis im Browser unter 'http://localhost:3000/'.
  */
 
-// TODO: CODE ERGÄNZEN
+app.use(express.static(__dirname + "/public"));
 
 /**
  * Konstruktor für GeoTag Objekte.
  * GeoTag Objekte sollen min. alle Felder des 'tag-form' Formulars aufnehmen.
  */
 
-// TODO: CODE ERGÄNZEN
+function GeoTag(lat, long, geoName, tag){
+    this.lat = lat;
+    this.long = long;
+    this.geoName = geoName;
+    this.tag = tag;
+}
 
 /**
  * Modul für 'In-Memory'-Speicherung von GeoTags mit folgenden Komponenten:
@@ -47,7 +52,71 @@ app.set('view engine', 'ejs');
  * - Funktion zum Löschen eines Geo Tags.
  */
 
-// TODO: CODE ERGÄNZEN
+var geoTagModule = (function(){
+    /*private member*/
+    var geoTags = [];
+
+    return {
+        /**
+         *
+         * @param lat1
+         * @param lon1
+         * @param radius in km
+         * @returns {*[]}
+         */
+        getByRadius:function (lat1, lon1, radius){
+            var returnTags = [];
+
+            geoTags.forEach(function (tag){
+                // source: http://www.movable-type.co.uk/scripts/latlong.html
+
+                var lat2 = tag.lat;
+                var lon2 = tag.long;
+
+                var R = 6371e3; // metres
+                var phi1 = lat1 * Math.PI/180; // φ, λ in radians
+                var phi2 = lat2 * Math.PI/180;
+                var deltaphi = (lat2-lat1) * Math.PI/180;
+                var deltalambda = (lon2-lon1) * Math.PI/180;
+
+                var a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) +
+                    Math.cos(phi1) * Math.cos(phi2) *
+                    Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+                var d = R * c; // in metres
+                console.log(d);
+
+                if(d < radius * 1000){
+                    returnTags.push(tag);
+                }
+            })
+            return returnTags;
+
+        },
+        getBySearchTerm:function(searchTerm){
+            var returnTags = [];
+            geoTags.forEach(function (tag){
+                if(tag.geoName.includes(searchTerm)){
+                    returnTags.push(tag);
+                }
+            });
+            return returnTags;
+
+
+        },
+        addGeoTag:function (geoTag){
+            geoTags.push(geoTag);
+        },
+        deleteGeoTag:function (name){
+            geoTags.forEach(function(tag, i){
+                if(tag.geoName == name){
+                    geoTags.splice(i,1);
+                }
+            })
+        }
+    };
+})();
 
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
@@ -60,7 +129,8 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     res.render('gta', {
-        taglist: []
+        taglist: [],
+        coordinates: {}
     });
 });
 
@@ -77,7 +147,17 @@ app.get('/', function(req, res) {
  * Die Objekte liegen in einem Standard Radius um die Koordinate (lat, lon).
  */
 
-// TODO: CODE ERGÄNZEN START
+app.post('/tagging', function(req, res) {
+    geoTagModule.addGeoTag(new GeoTag(req.body['latitude'], req.body['longitude'], req.body['name'], req.body['hashtag']));
+
+    res.render('gta', {
+        taglist: geoTagModule.getByRadius(req.body['latitude'], req.body['longitude'], 300),
+        coordinates: {
+            lat: req.body['latitude'],
+            lon: req.body['longitude']
+        }
+    });
+});
 
 /**
  * Route mit Pfad '/discovery' für HTTP 'POST' Requests.
@@ -91,7 +171,25 @@ app.get('/', function(req, res) {
  * Falls 'term' vorhanden ist, wird nach Suchwort gefiltert.
  */
 
-// TODO: CODE ERGÄNZEN
+// wie sinnvoll ist es, standardmäßig im umkreis des letzten eingetragenen wertes zu suchen?
+
+app.post('/discovery', function(req, res) {
+    var geoTags;
+    if(req.body['searchterm']){
+        geoTags = geoTagModule.getBySearchTerm(req.body['searchterm']);
+    }
+    else{
+        geoTags = geoTagModule.getByRadius(req.body['latitude'], req.body['longitude'], 300);
+    }
+
+    res.render('gta', {
+        taglist: geoTags,
+        coordinates: {
+            lat: req.body['latitude'],
+            lon: req.body['longitude']
+        }
+    });
+});
 
 /**
  * Setze Port und speichere in Express.

@@ -13,7 +13,7 @@ console.log("The script is going to start...");
 // Hier wird die verwendete API für Geolocations gewählt
 // Die folgende Deklaration ist ein 'Mockup', das immer funktioniert und eine fixe Position liefert.
 GEOLOCATIONAPI = {
-    getCurrentPosition: function(onsuccess) {
+    getCurrentPosition: function (onsuccess) {
         onsuccess({
             "coords": {
                 "latitude": 49.013790,
@@ -103,7 +103,7 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
 
         var tagList = "&pois=You," + lat + "," + lon;
         if (tags !== undefined) tags.forEach(function (tag) {
-            tagList += "|" + tag.name + "," + tag.latitude + "," + tag.longitude;
+            tagList += "|" + tag.geoName + "," + tag.lat + "," + tag.long;
         });
 
         var urlString = "https://www.mapquestapi.com/staticmap/v4/getmap?key=" +
@@ -121,11 +121,14 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
 
         updateLocation: function () {
             tryLocate(function (position) {
-                    console.log("success!");
-                    jQuery('input[name="latitude"]').val(getLatitude(position));
-                    jQuery('input[name="longitude"]').val(getLongitude(position));
+                    if (jQuery('input[name="latitude"]').val() == '' && jQuery('input[name="longitude"]').val() == '') {
+                        jQuery('input[name="latitude"]').val(getLatitude(position));
+                        jQuery('input[name="longitude"]').val(getLongitude(position));
+                    }
+                    var taglist = jQuery('[data-tags]').data('tags');
+
                     jQuery('#result-img').attr(
-                        'src', getLocationMapSrc(getLatitude(position), getLongitude(position))
+                        'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)
                     );
                 },
                 function (message) {
