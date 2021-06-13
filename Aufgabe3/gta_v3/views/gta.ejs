@@ -94,9 +94,9 @@
                 <div class="tagmap col-8">
                     <img id="result-img" src="./images/mapview.jpg" alt="a map with locations"
 
-                    <% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
+                    <% if (taglist !== undefined){ %>
                         data-tags="<%= JSON.stringify(taglist)%>"
-                    <% }); %>
+                    <% } %>
 
                     />
                     <div class="caption">Result map</div>
