@@ -121,7 +121,9 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
 
         updateLocation: function () {
             var taglist = jQuery('[data-tags]').data('tags');
-            if (jQuery('input[name="latitude"]').val() == '' && jQuery('input[name="longitude"]').val() == '') {
+            var lat = jQuery('input[name="latitude"]').val();
+            var long = jQuery('input[name="longitude"]').val();
+            if (lat == '' && long == '') {
                 tryLocate(function (position) {
                         jQuery('input[name="latitude"]').val(getLatitude(position));
                         jQuery('input[name="longitude"]').val(getLongitude(position));
@@ -133,10 +135,8 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
                     function (message) {
                         alert('Something went wrong.. Message: :' + message);
                     })
-            }
-            else {
-                jQuery('#result-img').attr(
-                    'src', getLocationMapSrc(jQuery('input[name="latitude"]').val(), jQuery('input[name="longitude"]').val(), taglist));
+            } else {
+                jQuery('#result-img').attr('src', getLocationMapSrc(lat, long, taglist));
             }
         }
 
