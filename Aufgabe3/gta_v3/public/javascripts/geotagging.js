@@ -120,20 +120,24 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
         readme: "Dieses Objekt enthält 'öffentliche' Teile des Moduls.",
 
         updateLocation: function () {
-            tryLocate(function (position) {
-                    if (jQuery('input[name="latitude"]').val() == '' && jQuery('input[name="longitude"]').val() == '') {
+            var taglist = jQuery('[data-tags]').data('tags');
+            var lat = jQuery('input[name="latitude"]').val();
+            var long = jQuery('input[name="longitude"]').val();
+            if (lat == '' && long == '') {
+                tryLocate(function (position) {
                         jQuery('input[name="latitude"]').val(getLatitude(position));
                         jQuery('input[name="longitude"]').val(getLongitude(position));
-                    }
-                    var taglist = jQuery('[data-tags]').data('tags');
 
-                    jQuery('#result-img').attr(
-                        'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)
-                    );
-                },
-                function (message) {
-                    alert('Something went wrong.. Message: :' + message);
-                })
+                        jQuery('#result-img').attr(
+                            'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)
+                        );
+                    },
+                    function (message) {
+                        alert('Something went wrong.. Message: :' + message);
+                    })
+            } else {
+                jQuery('#result-img').attr('src', getLocationMapSrc(lat, long, taglist));
+            }
         }
 
     }; // ... Ende öffentlicher Teil
