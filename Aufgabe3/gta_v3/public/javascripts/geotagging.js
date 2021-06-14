@@ -127,7 +127,7 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
                         jQuery('input[name="longitude"]').val(getLongitude(position));
 
                         jQuery('#result-img').attr(
-                            'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)    // HIER AUCH (Attribut "src" von ID: result image wird als link von mapquest api gesetzt der die Tags aus der Liste beinhaltet)
+                            'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)
                         );
                     },
                     function (message) {
