@@ -121,22 +121,23 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
 
         updateLocation: function () {
             var taglist = jQuery('[data-tags]').data('tags');
-            var lat = jQuery('input[name="latitude"]').val();
-            var long = jQuery('input[name="longitude"]').val();
-
-            if (lat == '' && long == '') {
+            if (jQuery('input[name="latitude"]').val() == '' && jQuery('input[name="longitude"]').val() == '') {
                 tryLocate(function (position) {
                         jQuery('input[name="latitude"]').val(getLatitude(position));
                         jQuery('input[name="longitude"]').val(getLongitude(position));
 
-                        lat = getLatitude(position);
-                        long = getLongitude(position);
+                        jQuery('#result-img').attr(
+                            'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)
+                        );
                     },
                     function (message) {
                         alert('Something went wrong.. Message: :' + message);
                     })
             }
-            jQuery('#result-img').attr('src', getLocationMapSrc(lat, long, taglist));
+            else {
+                jQuery('#result-img').attr(
+                    'src', getLocationMapSrc(jQuery('input[name="latitude"]').val(), jQuery('input[name="longitude"]').val(), taglist));
+            }
         }
 
     }; // ... Ende öffentlicher Teil
