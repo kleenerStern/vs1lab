@@ -120,20 +120,24 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
         readme: "Dieses Objekt enthält 'öffentliche' Teile des Moduls.",
 
         updateLocation: function () {
-            tryLocate(function (position) {
-                    if (jQuery('input[name="latitude"]').val() == '' && jQuery('input[name="longitude"]').val() == '') {
+            var taglist = jQuery('[data-tags]').data('tags');
+            if (jQuery('input[name="latitude"]').val() == '' && jQuery('input[name="longitude"]').val() == '') {
+                tryLocate(function (position) {
                         jQuery('input[name="latitude"]').val(getLatitude(position));
                         jQuery('input[name="longitude"]').val(getLongitude(position));
-                    }
-                    var taglist = jQuery('[data-tags]').data('tags');
 
-                    jQuery('#result-img').attr(
-                        'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)
-                    );
-                },
-                function (message) {
-                    alert('Something went wrong.. Message: :' + message);
-                })
+                        jQuery('#result-img').attr(
+                            'src', getLocationMapSrc(getLatitude(position), getLongitude(position), taglist)    // HIER AUCH (Attribut "src" von ID: result image wird als link von mapquest api gesetzt der die Tags aus der Liste beinhaltet)
+                        );
+                    },
+                    function (message) {
+                        alert('Something went wrong.. Message: :' + message);
+                    })
+            }
+            else {
+                jQuery('#result-img').attr(
+                    'src', getLocationMapSrc(jQuery('input[name="latitude"]').val(), jQuery('input[name="longitude"]').val(), taglist));
+            }
         }
 
     }; // ... Ende öffentlicher Teil
