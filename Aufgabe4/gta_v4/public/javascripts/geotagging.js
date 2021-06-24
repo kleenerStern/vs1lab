@@ -120,7 +120,7 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
         readme: "Dieses Objekt enthält 'öffentliche' Teile des Moduls.",
 
         updateLocation: function () {
-            var taglist = jQuery('[data-tags]').data('tags');
+            var taglist = JSON.parse(jQuery('[data-tags]').attr('data-tags'));
             var lat = jQuery('input[name="latitude"]').val();
             var long = jQuery('input[name="longitude"]').val();
             if (lat == '' && long == '') {
@@ -218,7 +218,7 @@ $(function () {
 
     function updateTagListAndMap(response) {
         // tags in data-tags der map schreiben
-        jQuery('[data-tags]').data('tags', response['entries']);
+        jQuery('[data-tags]').attr('data-tags', JSON.stringify(response['entries']));
 
         // alle vorherigen tags entfernen
         jQuery('ul#results li').remove();
@@ -259,8 +259,8 @@ $(function () {
             ajax.open('GET', '/geoTagspaginated?latitude='
                 + jQuery('input[name="latitude"]').val()
                 + '&longitude=' + jQuery('input[name="longitude"]').val()
-                + '&searchTerm=' + jQuery('input[name="searchterm"]').val()
-                + '&page=' + jQuery(event.target).data('page'), false);
+                + '&searchTerm=' + jQuery(event.target).attr('data-searchterm')
+                + '&page=' + jQuery(event.target).attr('data-page'), false);
 
             ajax.send(null);
 
