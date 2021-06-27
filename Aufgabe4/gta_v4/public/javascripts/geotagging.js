@@ -162,12 +162,16 @@ $(function () {
 
         // url für ajax zusammensetzen aus: searchterm, lat, long. Seite 1 Anfordern, da neue Suche
         ajax.open('GET', '/geoTagspaginated?searchTerm=' + formData[0]['value']
-            + '&latitude=' + formData[1]['value'] + '&longitude=' + formData[2]['value'] + '&page=1', false);
+            + '&latitude=' + formData[1]['value'] + '&longitude=' + formData[2]['value'] + '&page=1', true);
 
         ajax.send(null);
 
-        // das JSON an die Funktion übergeben welche die Tags & Map aktualisiert
-        updateTagListAndMap(JSON.parse(ajax.responseText));
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState == 4) {
+                // das JSON an die Funktion übergeben welche die Tags & Map aktualisiert
+                updateTagListAndMap(JSON.parse(ajax.responseText));
+            }
+        }
     })
 
     // tagging event submit listener
